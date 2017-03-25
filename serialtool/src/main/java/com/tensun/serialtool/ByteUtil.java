@@ -43,11 +43,7 @@ public class ByteUtil {
             return null;
         }
         for (int i = 0; i < bytes.length; i++) {
-            int v = bytes[i] & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                stringBuilder.append(0);
-            }
+            String hv = String.format("%02X", bytes[i]);
             stringBuilder.append(hv);
         }
         return stringBuilder.toString().toUpperCase(Locale.ENGLISH);

@@ -53,6 +53,8 @@ public class SerialPortReceiveThread implements Runnable {
                                 else {
                                     state = 1;
                                     i = -1;
+                                    if (mSerialPortReceiver != null)
+                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]));
                                     mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, 1, mReceiveBuffer.length);
                                 }
                                 break;
@@ -63,6 +65,8 @@ public class SerialPortReceiveThread implements Runnable {
                                 if (length <= 0 || length >= 100) {
                                     state = 1;
                                     i = -1;
+                                    if (mSerialPortReceiver != null)
+                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]));
                                     mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, 1, mReceiveBuffer.length);
                                 } else {
                                     cacheBuffer = new byte[length + 3];
@@ -81,23 +85,22 @@ public class SerialPortReceiveThread implements Runnable {
                             case 4:
                                 cacheBuffer[index] = b;
                                 if (b == 0x55) {
+                                    int data_length = cacheBuffer[1] & 0xFF;
                                     if (mSerialPortReceiver != null)
-                                        mSerialPortReceiver.onNoFilterData(ByteUtil.bytesToHexString(mReceiveBuffer, Integer.valueOf(Integer.toHexString(cacheBuffer[1] & 0xFF), 16) + 3));
+                                        mSerialPortReceiver.onNoFilterData(ByteUtil.bytesToHexString(mReceiveBuffer, data_length + 3));
                                     long now = System.currentTimeMillis();
                                     if (now - mReceiveTime >= mParameters.getFreeTime())
                                         mReceivedList.clear();
                                     mReceiveTime = System.currentTimeMillis();
-                                    int dataLength = Integer.valueOf(Integer.toHexString(cacheBuffer[1] & 0xFF), 16);
-                                    String data = ByteUtil.bytesToHexString(mReceiveBuffer, Integer.valueOf(Integer.toHexString(cacheBuffer[1] & 0xFF), 16) + 3);
+                                    String data = ByteUtil.bytesToHexString(mReceiveBuffer, data_length + 3);
                                     if ((!SerialPortDataUtils.filterData(mReceivedList, data, mParameters.getFilterTime())) && data.startsWith("FE") && data.endsWith("55")) {
                                         if (mSerialPortReceiver != null)
                                             mSerialPortReceiver.onFilterData(data);
-                                    } else {
-                                        if (mSerialPortReceiver != null)
-                                            mSerialPortReceiver.onCrashData(data);
                                     }
-                                    mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, dataLength, mReceiveBuffer.length);
+                                    mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, data_length, mReceiveBuffer.length);
                                 } else {
+                                    if (mSerialPortReceiver != null)
+                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]));
                                     mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, 1, mReceiveBuffer.length);
                                     i = -1;
                                     cacheBuffer = null;
