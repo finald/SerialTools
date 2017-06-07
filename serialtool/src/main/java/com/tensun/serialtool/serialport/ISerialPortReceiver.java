@@ -1,4 +1,4 @@
-package com.tensun.serialtool;
+package com.tensun.serialtool.serialport;
 
 /**
  * 串口数据接收接口

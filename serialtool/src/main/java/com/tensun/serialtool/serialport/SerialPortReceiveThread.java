@@ -1,4 +1,4 @@
-package com.tensun.serialtool;
+package com.tensun.serialtool.serialport;
 
 
 import android.serialport.SerialPort;
