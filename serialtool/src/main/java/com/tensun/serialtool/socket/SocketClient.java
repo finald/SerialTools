@@ -49,7 +49,7 @@ public class SocketClient {
 
         public HandlerThread() {
             try {
-                mBufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
+                mBufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream(),"gbk"));
                 mOutputStream = mSocket.getOutputStream();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -50,7 +50,7 @@ public class SocketServer {
         public HandlerThread(Socket socket) {
             mSocket = socket;
             try {
-                mBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                mBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),"gbk"));
                 mOutputStream = socket.getOutputStream();
             } catch (IOException e) {
                 e.printStackTrace();
