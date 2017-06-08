@@ -43,13 +43,24 @@ public class SocketClient {
         }
     }
 
+    public void reconnet() {
+        if (mSocket != null) {
+            try {
+                mSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mSocket = null;
+        }
+    }
+
     private class HandlerThread implements Runnable {
         private BufferedReader mBufferedReader;
         private OutputStream mOutputStream;
 
         public HandlerThread() {
             try {
-                mBufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream(),"gbk"));
+                mBufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream(), "gbk"));
                 mOutputStream = mSocket.getOutputStream();
             } catch (IOException e) {
                 e.printStackTrace();

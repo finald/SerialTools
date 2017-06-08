@@ -9,12 +9,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SocketServer {
 
     private final String TAG = "SocketServer";
     private ServerSocket mServerSocket;
     private IServer mServer;
+
+    private List<Socket> mSocketList = new ArrayList<>();
 
     public SocketServer(int port, IServer server) {
         try {
@@ -34,10 +38,21 @@ public class SocketServer {
                 try {
                     Socket client = mServerSocket.accept();
                     HandlerThread handlerThread = new HandlerThread(client);
+                    mSocketList.add(client);
                     new Thread(handlerThread).start();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    public void sendAllMessage(String message) {
+        for (int i = 0; i < mSocketList.size(); i++) {
+            try {
+                mSocketList.get(i).getOutputStream().write(message.getBytes("gbk"));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -50,7 +65,7 @@ public class SocketServer {
         public HandlerThread(Socket socket) {
             mSocket = socket;
             try {
-                mBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),"gbk"));
+                mBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "gbk"));
                 mOutputStream = socket.getOutputStream();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -65,6 +80,7 @@ public class SocketServer {
                     String line = mBufferedReader.readLine();
                     if (line == null) {
                         if (mSocket != null) {
+                            mSocketList.remove(mSocket);
                             try {
                                 mSocket.close();
                                 mSocket = null;
@@ -80,6 +96,7 @@ public class SocketServer {
                 } catch (IOException e) {
                     e.printStackTrace();
                     if (mSocket != null) {
+                        mSocketList.remove(mSocket);
                         try {
                             mSocket.close();
                             mSocket = null;
