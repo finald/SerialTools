@@ -8,16 +8,14 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class SocketClient {
-    interface Client {
-        void rxData(String data);
-    }
+
 
     private String mIp;
     private int mPort;
     private Socket mSocket;
-    private Client mClient;
+    private IClient mClient;
 
-    public SocketClient(String ip, int port, Client client) {
+    public SocketClient(String ip, int port, IClient client) {
         mIp = ip;
         mPort = port;
         mClient = client;

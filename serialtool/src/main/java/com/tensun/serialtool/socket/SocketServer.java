@@ -9,14 +9,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SocketServer {
-    interface Server {
-        void rxData(String data);
-    }
 
     private ServerSocket mServerSocket;
-    private Server mServer;
+    private IServer mServer;
 
-    public SocketServer(int port, Server server) {
+    public SocketServer(int port, IServer server) {
         try {
             mServerSocket = new ServerSocket(port);
             new Thread(new initThread()).start();
