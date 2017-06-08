@@ -1,6 +1,8 @@
 package com.tensun.serialtool.socket;
 
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +12,7 @@ import java.net.Socket;
 
 public class SocketServer {
 
+    private final String TAG = "SocketServer";
     private ServerSocket mServerSocket;
     private IServer mServer;
 
@@ -57,7 +60,7 @@ public class SocketServer {
 
         @Override
         public void run() {
-            while (true) {
+            while (!Thread.interrupted()) {
                 try {
                     String line = mBufferedReader.readLine();
                     if (line == null) {
@@ -68,6 +71,7 @@ public class SocketServer {
                             } catch (Exception e1) {
                                 mSocket = null;
                             }
+                            Thread.currentThread().interrupt();
                         }
                     } else {
                         if (mServer != null)
@@ -82,9 +86,11 @@ public class SocketServer {
                         } catch (Exception e1) {
                             mSocket = null;
                         }
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
+            Log.d(TAG, "客户端线程关闭");
         }
     }
 }

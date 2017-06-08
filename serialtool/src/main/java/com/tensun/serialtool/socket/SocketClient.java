@@ -59,7 +59,7 @@ public class SocketClient {
 
         @Override
         public void run() {
-            while (true) {
+            while (!Thread.interrupted()) {
                 try {
                     String line = mBufferedReader.readLine();
                     if (line == null) {
@@ -70,6 +70,7 @@ public class SocketClient {
                             } catch (Exception e) {
                                 mSocket = null;
                             }
+                            Thread.currentThread().interrupt();
                         }
                         return;
                     } else {
@@ -85,6 +86,7 @@ public class SocketClient {
                         } catch (Exception e1) {
                             mSocket = null;
                         }
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
