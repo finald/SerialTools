@@ -60,8 +60,19 @@ public class SocketServer {
             while (true) {
                 try {
                     String line = mBufferedReader.readLine();
-                    if (mServer != null)
-                        mServer.rxData(line);
+                    if (line == null) {
+                        if (mSocket != null) {
+                            try {
+                                mSocket.close();
+                                mSocket = null;
+                            } catch (Exception e1) {
+                                mSocket = null;
+                            }
+                        }
+                    } else {
+                        if (mServer != null)
+                            mServer.rxData(line);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     if (mSocket != null) {

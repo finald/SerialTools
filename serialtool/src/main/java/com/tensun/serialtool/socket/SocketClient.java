@@ -62,8 +62,20 @@ public class SocketClient {
             while (true) {
                 try {
                     String line = mBufferedReader.readLine();
-                    if (mClient != null)
-                        mClient.rxData(line);
+                    if (line == null) {
+                        if (mSocket != null) {
+                            try {
+                                mSocket.close();
+                                mSocket = null;
+                            } catch (Exception e) {
+                                mSocket = null;
+                            }
+                        }
+                        return;
+                    } else {
+                        if (mClient != null)
+                            mClient.rxData(line);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     if (mSocket != null) {
