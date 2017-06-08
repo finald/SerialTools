@@ -43,6 +43,14 @@ public class SocketClient {
         }
     }
 
+    public void setIp(String ip) {
+        mIp = ip;
+    }
+
+    public void setPort(int port) {
+        mPort = port;
+    }
+
     public void reconnet() {
         if (mSocket != null) {
             try {
