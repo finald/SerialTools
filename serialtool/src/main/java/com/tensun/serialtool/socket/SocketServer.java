@@ -64,12 +64,11 @@ public class SocketServer {
                         mServer.rxData(line);
                 } catch (IOException e) {
                     e.printStackTrace();
-                } finally {
                     if (mSocket != null) {
                         try {
                             mSocket.close();
                             mSocket = null;
-                        } catch (Exception e) {
+                        } catch (Exception e1) {
                             mSocket = null;
                         }
                     }
