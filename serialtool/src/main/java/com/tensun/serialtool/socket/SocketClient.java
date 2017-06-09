@@ -27,9 +27,11 @@ public class SocketClient {
         @Override
         public void run() {
             while (true) {
-                if (mSocket == null || !mSocket.isConnected()) {
+                if (mSocket == null) {
                     try {
                         mSocket = new Socket(mIp, mPort);
+                        if (mClient != null)
+                            mClient.onSuccessLink();
                         new Thread(new HandlerThread()).start();
                     } catch (IOException e) {
                         e.printStackTrace();
