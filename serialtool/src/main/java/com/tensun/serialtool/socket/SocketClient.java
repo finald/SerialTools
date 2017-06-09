@@ -19,9 +19,10 @@ public class SocketClient {
         mIp = ip;
         mPort = port;
         mClient = client;
+        new Thread(new ConnectThread()).start();
     }
 
-    private class ConnetThread implements Runnable {
+    private class ConnectThread implements Runnable {
 
         @Override
         public void run() {
