@@ -31,7 +31,7 @@ public class SocketClient {
                     try {
                         mSocket = new Socket(mIp, mPort);
                         if (mClient != null)
-                            mClient.onSuccessLink();
+                            mClient.onConnected();
                         new Thread(new HandlerThread()).start();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -100,6 +100,8 @@ public class SocketClient {
                             try {
                                 mSocket.close();
                                 mSocket = null;
+                                if (mClient != null)
+                                    mClient.onClosed();
                             } catch (Exception e) {
                                 mSocket = null;
                             }
@@ -116,6 +118,8 @@ public class SocketClient {
                         try {
                             mSocket.close();
                             mSocket = null;
+                            if (mClient != null)
+                                mClient.onClosed();
                         } catch (Exception e1) {
                             mSocket = null;
                         }
