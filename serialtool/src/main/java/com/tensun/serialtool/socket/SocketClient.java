@@ -65,6 +65,17 @@ public class SocketClient {
         }
     }
 
+    public void sendMessage(byte[] msg) {
+        if (mSocket != null) {
+            try {
+                mSocket.getOutputStream().write(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     private class HandlerThread implements Runnable {
         private BufferedReader mBufferedReader;
         private OutputStream mOutputStream;
