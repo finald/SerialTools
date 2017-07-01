@@ -54,7 +54,7 @@ public class SerialPortReceiveThread implements Runnable {
                                     state = 1;
                                     i = -1;
                                     if (mSerialPortReceiver != null)
-                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]));
+                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]), 1);
                                     mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, 1, mReceiveBuffer.length);
                                 }
                                 break;
@@ -66,7 +66,7 @@ public class SerialPortReceiveThread implements Runnable {
                                     state = 1;
                                     i = -1;
                                     if (mSerialPortReceiver != null)
-                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]));
+                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]), 2);
                                     mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, 1, mReceiveBuffer.length);
                                 } else {
                                     cacheBuffer = new byte[length + 3];
@@ -100,7 +100,7 @@ public class SerialPortReceiveThread implements Runnable {
                                     mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, data_length, mReceiveBuffer.length);
                                 } else {
                                     if (mSerialPortReceiver != null)
-                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]));
+                                        mSerialPortReceiver.onCrashData(String.format("%02X", mReceiveBuffer[0]), 3);
                                     mReceiveBuffer = Arrays.copyOfRange(mReceiveBuffer, 1, mReceiveBuffer.length);
                                     i = -1;
                                     cacheBuffer = null;

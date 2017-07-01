@@ -30,5 +30,5 @@ public interface ISerialPortReceiver<T> {
      *
      * @param data
      */
-    void onCrashData(T data);
+    void onCrashData(T data, int location);
 }
