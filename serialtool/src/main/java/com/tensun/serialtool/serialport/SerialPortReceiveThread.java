@@ -13,7 +13,7 @@ public class SerialPortReceiveThread implements Runnable {
     private final String TAG = "SerialPortReceiveThread";
 
     private ISerialPortReceiver mSerialPortReceiver;
-    private boolean mStop = false;
+    private volatile boolean mStop = false;
     private SerialPort mSerialPort;
     private long mReceiveTime = 0;
     private LinkedList<String> mReceivedList = new LinkedList<String>();
