@@ -3,7 +3,7 @@ package com.tensun.serialtool.serialport;
 /**
  * 串口数据接收接口
  */
-public interface ISerialPortReceiver<T> {
+public abstract interface ISerialPortReceiver<T> {
     /**
      * 原始数据
      *
@@ -31,4 +31,6 @@ public interface ISerialPortReceiver<T> {
      * @param data
      */
     void onCrashData(T data, int location);
+
+    void onComplete();
 }

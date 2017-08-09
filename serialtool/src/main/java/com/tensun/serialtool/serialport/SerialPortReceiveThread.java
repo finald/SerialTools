@@ -12,7 +12,7 @@ public class SerialPortReceiveThread implements Runnable {
     private final String TAG = "SerialPortReceiveThread";
 
     private ISerialPortReceiver mSerialPortReceiver;
-//    private boolean mStop = false;
+    private boolean mStop = false;
     private SerialPort mSerialPort;
     private long mReceiveTime = 0;
     private LinkedList<String> mReceivedList = new LinkedList<String>();
@@ -34,7 +34,7 @@ public class SerialPortReceiveThread implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
+        while (!mStop) {
             try {
                 byte[] bytes = SerialHelper.readBytes(mSerialPort);
                 mReceiveBuffer = ByteUtil.appendByte(mReceiveBuffer, bytes);
@@ -122,15 +122,17 @@ public class SerialPortReceiveThread implements Runnable {
                 Log.e(TAG, e.getStackTrace().toString());
             }
         }
+        if (mSerialPortReceiver != null)
+            mSerialPortReceiver.onComplete();
     }
 
     public void setSerialPortReceiver(ISerialPortReceiver serialPortReceiver) {
         mSerialPortReceiver = serialPortReceiver;
     }
 
-//    public void setStop(boolean stop) {
-//        mStop = stop;
-//    }
+    public void setStop(boolean stop) {
+        mStop = stop;
+    }
 
     public SerialPortReceiveParameters getParameters() {
         return mParameters;
