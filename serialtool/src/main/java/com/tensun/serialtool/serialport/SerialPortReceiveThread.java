@@ -4,6 +4,7 @@ package com.tensun.serialtool.serialport;
 import android.serialport.SerialPort;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -36,7 +37,8 @@ public class SerialPortReceiveThread implements Runnable {
     public void run() {
         while (!mStop) {
             try {
-                byte[] bytes = SerialHelper.readBytes(mSerialPort);
+                byte[] bytes = new byte[0];
+                bytes = SerialHelper.readBytes(mSerialPort);
                 mReceiveBuffer = ByteUtil.appendByte(mReceiveBuffer, bytes);
                 if (mSerialPortReceiver != null)
                     mSerialPortReceiver.onRawData(ByteUtil.bytesToHexString(bytes));
@@ -116,10 +118,16 @@ public class SerialPortReceiveThread implements Runnable {
                 Thread.sleep(2);
             } catch (ArrayIndexOutOfBoundsException e) {
                 Log.e(TAG, e.getStackTrace().toString());
+                break;
             } catch (InterruptedException e) {
                 Log.e(TAG, e.getStackTrace().toString());
+                break;
             } catch (StringIndexOutOfBoundsException e) {
                 Log.e(TAG, e.getStackTrace().toString());
+                break;
+            } catch (IOException e) {
+                Log.e(TAG, e.getStackTrace().toString());
+                break;
             }
         }
         if (mSerialPortReceiver != null)

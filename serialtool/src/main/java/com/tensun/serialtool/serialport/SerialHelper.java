@@ -1,7 +1,6 @@
 package com.tensun.serialtool.serialport;
 
 
-
 import android.serialport.SerialPort;
 
 import java.io.File;
@@ -12,22 +11,20 @@ public class SerialHelper {
 
     /**
      * 从串口读取数据数组
+     *
      * @param serialPort
      * @return
      */
-    public static byte[] readBytes(SerialPort serialPort) {
+    public static byte[] readBytes(SerialPort serialPort) throws IOException {
         byte[] bytes = new byte[1024];
         int b = 0;
-        try {
-            b = serialPort.getInputStream().read(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        b = serialPort.getInputStream().read(bytes);
         return Arrays.copyOfRange(bytes, 0, b);
     }
 
     /**
      * 从串口读取一个字节数据
+     *
      * @param serialPort
      * @return
      */
@@ -43,8 +40,9 @@ public class SerialHelper {
 
     /**
      * 往串口输出数据
+     *
      * @param serialPorts
-     * @param buffer byte[]
+     * @param buffer      byte[]
      */
     public static void write(SerialPort serialPorts, byte[] buffer) {
         try {
@@ -57,6 +55,7 @@ public class SerialHelper {
 
     /**
      * 关闭串口
+     *
      * @param serialPort
      */
     public static void close(SerialPort serialPort) {
@@ -67,6 +66,7 @@ public class SerialHelper {
 
     /**
      * 打开指定名称 波特率串口
+     *
      * @param device
      * @param baudRate
      * @return
